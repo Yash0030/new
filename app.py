@@ -123,7 +123,12 @@ You are a health policy expert. Use only the retrieved clauses below to answer t
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    port = os.environ.get("PORT")
+    if port is None:
+        print("⚠️  PORT not found in environment, defaulting to 5000")
+        port = 5000
+    else:
+        port = int(port)
 
+    app.run(host="0.0.0.0", port=port)
 
