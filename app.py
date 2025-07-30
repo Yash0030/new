@@ -18,10 +18,14 @@ app = Flask(__name__)
 
 # Initialize LLM + Embedder
 llm = HuggingFaceEndpoint(
-    repo_id="mistralai/Voxtral-Mini-3B-2507",
+    repo_id="meta-llama/Meta-Llama-3-8B-Instruct",
     task="text-generation",
     huggingfacehub_api_token=os.getenv("HUGGINGFACEHUB_ACCESS_TOKEN"),
-    temperature=0.0
+    temperature=0.0,
+    top_k=1,
+    top_p=1.0,
+    do_sample=False,
+    repetition_penalty=1.0,
 )
 
 model=ChatHuggingFace(llm=llm)
@@ -29,7 +33,6 @@ embedder = HuggingFaceEndpointEmbeddings(
     model="sentence-transformers/all-MiniLM-L6-v2",
     huggingfacehub_api_token=os.getenv("HUGGINGFACEHUB_ACCESS_TOKEN")
 )
-
 
 @app.route("/hackrx/run", methods=["POST"])
 @require_auth
@@ -71,12 +74,12 @@ def hackrx_run():
             # Load and split documents
             chunks = load_and_split_documents(files)
 
-        # Vectorstore
         vectorstore = Chroma.from_documents(
                 documents=chunks,
                 embedding=embedder,
                 collection_name="hackrx_memory_store"
             )
+
 
         answers = []
 
@@ -104,13 +107,12 @@ You are a health policy expert. Use only the retrieved clauses below to answer t
 {chr(10).join([doc.page_content for doc in retrieved_docs])}
 
 ## Instructions:
-- Respond in 1–2 sentences only.
+- Respond in 2–4 sentences only.
 - Base your answer strictly on the provided clauses.
-- Cite clause references only if relevant (e.g., "as per clause ii").
+- Cite clause references if relevant (e.g., "as per clause ii").
 - Do NOT speculate or assume anything not stated.
 - Do NOT include placeholder terms like [Insert Location] or unrelated geography.
 - If information is missing, clearly say: "The policy document does not specify this."
-
 
 ## Answer:
 """
@@ -125,4 +127,3 @@ You are a health policy expert. Use only the retrieved clauses below to answer t
 
 if __name__ == "__main__":
     app.run(debug=True)
-
