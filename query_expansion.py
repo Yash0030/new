@@ -24,34 +24,33 @@ parser = JsonOutputParser()
 # LangChain Prompt Template
 prompt = ChatPromptTemplate.from_messages([
     ("system", 
-     """You are an intelligent assistant that expands vague insurance or policy-related queries 
+     """You are an intelligent assistant that expands only vague insurance or policy-related queries 
      and provides a reasoning path for document retrieval and decision making.
      
-     Given a natural language query, do two things:
-     1. Expand the query with relevant structure (age, location, treatment, policy duration).
-     2. Generate a chain of reasoning steps that explain how a decision could be made using policy clauses.
+     Given a natural language query, do one thing:
+     1. Extract these (age, location, treatment, policy duration) information only if given and  Expand the query with relevant structure 
+    
      
      Return JSON with two fields: 
      - "expanded_query" (string)
-     - "thought_steps" (string with bullet points or step-by-step reasoning)"""),
+    """),
      
     ("human", "{query}")
 ])
 
 # Chain: Prompt → LLM → JSON Parser
 query_expansion_chain: Runnable = prompt | model | parser
-
-
+ # 2. Generate a chain of reasoning steps that explain how a decision could be made using policy clauses.
+# - "thought_steps" (string with bullet points or step-by-step reasoning)
 def expand_query_and_thought(query: str) -> dict:
     """
-    Run the LangChain query expansion and CoT generation.
+    Run the LangChain query expansion
     :param query: user input string
-    :return: dict with expanded_query and thought_steps
+    :return: dict with expanded_query 
     """
     try:
         return query_expansion_chain.invoke({"query": query})
     except Exception as e:
         return {
-            "expanded_query": query,
-            "thought_steps": "Chain-of-thought could not be generated."
+            "expanded_query": query
         }
