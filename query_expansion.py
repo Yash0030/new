@@ -10,11 +10,7 @@ llm = HuggingFaceEndpoint(
     repo_id="meta-llama/Meta-Llama-3-8B-Instruct",
     task="text-generation",
     huggingfacehub_api_token=os.getenv("HUGGINGFACEHUB_ACCESS_TOKEN"),
-    temperature=0.0,
-    top_k=1,
-    top_p=1.0,
-    do_sample=False,
-    repetition_penalty=1.0,
+    temperature=0.0
 )
 
 model=ChatHuggingFace(llm=llm)
