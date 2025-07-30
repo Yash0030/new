@@ -31,7 +31,7 @@ prompt = ChatPromptTemplate.from_messages([
      1. Extract these (age, location, treatment, policy duration) information only if given and  Expand the query with relevant structure 
     
      
-     Return JSON with two fields: 
+     Return  
      - "expanded_query" (string)
     """),
      
@@ -46,7 +46,7 @@ def expand_query_and_thought(query: str) -> dict:
     """
     Run the LangChain query expansion
     :param query: user input string
-    :return: dict with expanded_query 
+    :return: expanded_query 
     """
     try:
         return query_expansion_chain.invoke({"query": query})
