@@ -86,7 +86,7 @@ def hackrx_run():
         # Process each question
         for q in questions:
             result = expand_query_and_thought(q)
-            expanded_query = result["expanded_query"]
+            expanded_query = result
     
 
             retrieved_docs = vectorstore.similarity_search(expanded_query, k=5)
