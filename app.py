@@ -107,9 +107,9 @@ You are a health policy expert. Use only the retrieved clauses below to answer t
 {chr(10).join([doc.page_content for doc in retrieved_docs])}
 
 ## Instructions:
-- Respond in 2–4 sentences only.
+- Respond in 1-2 sentences only.
 - Base your answer strictly on the provided clauses.
-- Cite clause references if relevant (e.g., "as per clause ii").
+- Cite clause references only if relevant (e.g., "as per clause ii").
 - Do NOT speculate or assume anything not stated.
 - Do NOT include placeholder terms like [Insert Location] or unrelated geography.
 - If information is missing, clearly say: "The policy document does not specify this."
