@@ -29,6 +29,9 @@ embedder = HuggingFaceEndpointEmbeddings(
     model="sentence-transformers/all-MiniLM-L6-v2",
     huggingfacehub_api_token=os.getenv("HUGGINGFACEHUB_ACCESS_TOKEN")
 )
+@app.route("/")
+def home():
+    return "✅ Flask app is running on Railway!"
 
 @app.route("/hackrx/run", methods=["POST"])
 @require_auth
