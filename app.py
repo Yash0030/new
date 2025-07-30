@@ -29,9 +29,7 @@ embedder = HuggingFaceEndpointEmbeddings(
     model="sentence-transformers/all-MiniLM-L6-v2",
     huggingfacehub_api_token=os.getenv("HUGGINGFACEHUB_ACCESS_TOKEN")
 )
-@app.route("/")
-def home():
-    return "✅ Flask app is running on Railway!"
+
 
 @app.route("/hackrx/run", methods=["POST"])
 @require_auth
@@ -126,12 +124,5 @@ You are a health policy expert. Use only the retrieved clauses below to answer t
 
 
 if __name__ == "__main__":
-    port = os.environ.get("PORT")
-    if port is None:
-        print("⚠️  PORT not found in environment, defaulting to 5000")
-        port = 5000
-    else:
-        port = int(port)
-
-    app.run(host="0.0.0.0", port=port)
+    app.run(debug=True)
 
