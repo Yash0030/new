@@ -87,7 +87,7 @@ def hackrx_run():
         for q in questions:
             result = expand_query_and_thought(q)
             expanded_query = result["expanded_query"]
-            thought_steps = result["thought_steps"]
+    
 
             retrieved_docs = vectorstore.similarity_search(expanded_query, k=5)
 
@@ -100,8 +100,6 @@ You are a health policy expert. Use only the retrieved clauses below to answer t
 ## Reformulated Query:
 {expanded_query}
 
-## Reasoning:
-{thought_steps}
 
 ## Policy Clauses:
 {chr(10).join([doc.page_content for doc in retrieved_docs])}
