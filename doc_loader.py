@@ -1,17 +1,15 @@
 import os
 import tempfile
-import re
-from langchain_community.vectorstores import Chroma
-from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
+import pickle
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import (
-    PyMuPDFLoader,
-    UnstructuredWordDocumentLoader,
-    UnstructuredEmailLoader
+    PyMuPDFLoader,                    # For PDF
+    UnstructuredWordDocumentLoader,  # For DOCX
+    UnstructuredEmailLoader          # For .eml
 )
-from langchain.text_splitter import MarkdownHeaderTextSplitter, RecursiveCharacterTextSplitter
-from langchain.schema import Document
-from dotenv import load_dotenv
 
+
+from dotenv import load_dotenv
 load_dotenv()
 
 def load_and_split_documents(file_objects):
@@ -67,17 +65,10 @@ def load_and_split_documents(file_objects):
 #     Embed and save the FAISS vector store with metadata.
 #     """
 #     os.makedirs(output_dir, exist_ok=True)
-#     embedder = HuggingFaceInferenceAPIEmbeddings(
-#     api_key=os.getenv("HUGGINGFACEHUB_ACCESS_TOKEN"),
-#     model_name="sentence-transformers/all-MiniLM-L6-v2"
-# )
+#     embedder =SentenceTransformer('all-MiniLM-L6-v2')
 
-#     vectorstore = Chroma.from_documents(
-#                 documents=chunks,
-#                 embedding=embedder,
-#                 collection_name="hackrx_memory_store"
-#             )
-    
+#     vectorstore = FAISS.from_documents(chunks, embedder)
+#     vectorstore.save_local(output_dir)
 
 #     with open(os.path.join(output_dir, "docs.pkl"), "wb") as f:
 #         pickle.dump(chunks, f)
